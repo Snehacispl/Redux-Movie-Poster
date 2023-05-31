@@ -1,7 +1,9 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 function Navbar() {
+  const cart = useSelector((state) => state.cart);
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
       <div className="container-fluid">
@@ -27,7 +29,9 @@ function Navbar() {
             <Link className="nav-link" to="/cart">
               <span className="position-relative">
                 Cart
-                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"></span>
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {cart.length}
+                </span>
               </span>
             </Link>
           </div>
