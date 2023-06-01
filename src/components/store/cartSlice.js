@@ -27,13 +27,17 @@ const cartSlice = createSlice({
       });
     },
     deccartquantity(state, action) {
-      state.map((item) => {
-        if (item.imdbID === action.payload.imdbID) {
-          if (item.quantity >= 1) {
-            item.quantity = item.quantity - 1;
+      if (action.payload.quantity >= 1) {
+        state.map((item) => {
+          if (item.imdbID === action.payload.imdbID) {
+            if (item.quantity >= 1) {
+              item.quantity = item.quantity - 1;
+            }
           }
-        }
-      });
+        });
+      } else {
+        return state.filter((item) => item.imdbID !== action.payload.imdbID);
+      }
     },
   },
 });
