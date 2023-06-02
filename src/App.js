@@ -1,5 +1,7 @@
 import "./App.css";
+import Home from "./components/Home";
 import MovieList from "./components/MovieList";
+import MovieDetail from "./components/MovieDetail";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
@@ -16,11 +18,14 @@ function App() {
         <BrowserRouter>
           <Navbar />
           <Routes>
-            <Route path="/" element={<MovieList />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/MovieList" element={<MovieList />} />
+
+            <Route path="/MovieDetail" element={<MovieDetail />} />
             <Route path="/cart" element={<Cart />} />
           </Routes>
+          <Footer />
         </BrowserRouter>
-        <Footer />
       </Provider>
     </div>
   );

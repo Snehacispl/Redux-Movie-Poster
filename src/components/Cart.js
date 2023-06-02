@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import "../assets/css/cartpage.css";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   removefromcart,
   clearCart,
@@ -17,6 +18,47 @@ const Cart = () => {
 
   const totalprice = useSelector(cartTotal).toFixed(2);
   const totalqty = useSelector(cartTotalqty);
+  const paypal = useRef();
+
+  const paypalfunc = () => {
+    const cartitemnames = [];
+    cart.map((item) => {
+      if (!cartitemnames.includes(item.Title)) {
+        cartitemnames.push(item.Title + ", ");
+        // let paypalitem = new Set(cartitemnames);
+      }
+    });
+    window.paypal
+      .Buttons({
+        createOrder: (data, actions, err) => {
+          return actions.order.create({
+            intent: "CAPTURE",
+            purchase_units: [
+              {
+                description: JSON.stringify(cartitemnames),
+                amount: {
+                  currency_code: "USD",
+                  //value: totalprice,
+                  value: 1.0,
+                },
+              },
+            ],
+          });
+        },
+        onApprove: (data, actions) => {
+          const order = actions.order.capture();
+          console.log(data.orderID);
+        },
+        onError: (err) => {
+          console.log(err);
+        },
+      })
+      .render(paypal.current);
+  };
+
+  useEffect(() => {
+    paypalfunc();
+  });
   return (
     <div className="CartContainer">
       <div className="Header">
@@ -56,7 +98,7 @@ const Cart = () => {
                 </div>
               </div>
               <div className="prices">
-                <div className="amount">Rs.{item.price}</div>
+                <div className="amount">${item.price}</div>
                 <div className="save">
                   <u>Save for later</u>
                 </div>
@@ -79,9 +121,13 @@ const Cart = () => {
             <div className="Subtotal">Sub-Total</div>
             <div className="items">{totalqty} items</div>
           </div>
-          <div className="total-amount">${totalprice}</div>
+          <div className="total-amount" style={{ color: "white" }}>
+            ${totalprice}
+          </div>
         </div>
-        <button className="button">Checkout</button>
+        <div>
+          <div ref={paypal}></div>
+        </div>
       </div>
     </div>
   );
