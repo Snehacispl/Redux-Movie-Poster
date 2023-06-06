@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import "../assets/css/cartpage.css";
 import { useDispatch, useSelector } from "react-redux";
-
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import {
   removefromcart,
   clearCart,
@@ -18,47 +18,47 @@ const Cart = () => {
 
   const totalprice = useSelector(cartTotal).toFixed(2);
   const totalqty = useSelector(cartTotalqty);
-  const paypal = useRef();
+  // const paypal = useRef();
 
-  const paypalfunc = () => {
-    const cartitemnames = [];
-    cart.map((item) => {
-      if (!cartitemnames.includes(item.Title)) {
-        cartitemnames.push(item.Title + ", ");
-        // let paypalitem = new Set(cartitemnames);
-      }
-    });
-    window.paypal
-      .Buttons({
-        createOrder: (data, actions, err) => {
-          return actions.order.create({
-            intent: "CAPTURE",
-            purchase_units: [
-              {
-                description: JSON.stringify(cartitemnames),
-                amount: {
-                  currency_code: "USD",
-                  //value: totalprice,
-                  value: 1.0,
-                },
-              },
-            ],
-          });
-        },
-        onApprove: (data, actions) => {
-          const order = actions.order.capture();
-          console.log(data.orderID);
-        },
-        onError: (err) => {
-          console.log(err);
-        },
-      })
-      .render(paypal.current);
-  };
+  // const paypalfunc = () => {
+  //   const cartitemnames = [];
+  //   cart.map((item) => {
+  //     if (!cartitemnames.includes(item.Title)) {
+  //       cartitemnames.push(item.Title + ", ");
+  //       // let paypalitem = new Set(cartitemnames);
+  //     }
+  //   });
+  //   window.paypal
+  //     .Buttons({
+  //       createOrder: (data, actions, err) => {
+  //         return actions.order.create({
+  //           intent: "CAPTURE",
+  //           purchase_units: [
+  //             {
+  //               description: JSON.stringify(cartitemnames),
+  //               amount: {
+  //                 currency_code: "USD",
+  //                 //value: totalprice,
+  //                 value: 1.0,
+  //               },
+  //             },
+  //           ],
+  //         });
+  //       },
+  //       onApprove: (data, actions) => {
+  //         const order = actions.order.capture();
+  //         console.log(data.orderID);
+  //       },
+  //       onError: (err) => {
+  //         console.log(err);
+  //       },
+  //     })
+  //     .render(paypal.current);
+  // };
 
-  useEffect(() => {
-    paypalfunc();
-  });
+  // useEffect(() => {
+  //   //  paypalfunc();
+  // });
   return (
     <div className="CartContainer">
       <div className="Header">
@@ -125,9 +125,33 @@ const Cart = () => {
             ${totalprice}
           </div>
         </div>
-        <div>
-          <div ref={paypal}></div>
-        </div>
+        <div>{/* <div ref={paypal}></div> */}</div>
+        <PayPalScriptProvider
+          options={{
+            "client-id":
+              "ARNMywa98AcRZjmGQ7KVSI0XfjxdOsjZecD9q60VJoykSYFsGvA2n-mzirC8xJM6dVKjcIHxqz_yYyGZ",
+          }}
+        >
+          <PayPalButtons
+            createOrder={(data, actions) => {
+              return actions.order.create({
+                purchase_units: [
+                  {
+                    amount: {
+                      value: 0.01,
+                    },
+                  },
+                ],
+              });
+            }}
+            onApprove={(data, actions) => {
+              return actions.order.capture().then((details) => {
+                const name = details.payer.name.given_name;
+                alert(`Transaction completed by ${name}`);
+              });
+            }}
+          />
+        </PayPalScriptProvider>
       </div>
     </div>
   );

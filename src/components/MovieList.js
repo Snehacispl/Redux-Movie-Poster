@@ -8,6 +8,7 @@ import ReactPaginate from "react-paginate";
 const MovieList = () => {
   const dispatch = useDispatch();
   const [page, setpage] = useState(1);
+  const [productsitem, setproductlist] = useState(1);
   const [pageCount, setPageCount] = useState(1);
   const { data, totalresult } = useSelector((state) => state.product);
 
@@ -19,12 +20,14 @@ const MovieList = () => {
 
     setPageCount(Math.ceil(totalresult / 10));
   }, [page]);
+
   let products = data.map((item) =>
     Object.assign({}, item, {
       price: parseFloat((Math.random() * 999).toFixed(2)),
       quantity: 1,
     })
   );
+
   return (
     <>
       <main className="main-content">

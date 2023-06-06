@@ -1,6 +1,15 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { fetchproductdetails } from "./store/ProductSlice";
+import { Link, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 function MovieDetail() {
+  const params = useParams();
+  const dispatch = useDispatch();
+  const { singledata, ratings } = useSelector((state) => state.product);
+
+  useEffect(() => {
+    dispatch(fetchproductdetails(params.id));
+  }, []);
   return (
     <>
       <main className="main-content">
@@ -9,134 +18,93 @@ function MovieDetail() {
             <div className="breadcrumbs">
               <Link to="/">Home</Link>
 
-              <span>The Croods</span>
+              <span>{singledata.Title}</span>
             </div>
-
             <div className="content">
               <div className="row">
                 <div className="col-md-6">
                   <figure className="movie-poster">
-                    <img src="dummy/single-image.jpg" alt="#" />
+                    <img src={singledata.Poster} alt={singledata.Title} />
                   </figure>
                 </div>
                 <div className="col-md-6">
-                  <h2 className="movie-title">The Croods</h2>
-                  <div className="movie-summary">
-                    <p>
-                      Sed ut perspiciatis unde omnis iste natus error sit
-                      voluptatem accusantium doloremque laudantium, totam rem
-                      aperiam, eaque ipsa quae ab illo inventore veritatis et
-                      quasi architecto beatae vitae dicta sunt explicabo.{" "}
-                    </p>
-
-                    <p>
-                      Nemo enim ipsam voluptatem quia voluptas sit aspernatur
-                      aut odit aut fugit, sed quia consequuntur magni dolores
-                      eos qui ratione voluptatem sequi nesciunt porro quisquam
-                      est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                      adipisci velit sed.
-                    </p>
-                  </div>
+                  <h2 className="movie-title">{singledata.Title}</h2>
+                  {/* <div className="movie-summary">
+                    <p>{singledata.Plot}</p>
+                  </div> */}
                   <ul className="movie-meta">
                     <li>
-                      <strong>Rating:</strong>
-                      <div className="star-rating" title="Rated 4.00 out of 5">
-                        <span style={{ width: "80%" }}>
-                          <strong className="rating">4.00</strong> out of 5
+                      <strong> Imdb Rating: </strong>
+                      <span style={{ width: "80%" }}>
+                        <span className="rating">
+                          {singledata.imdbRating} out of 10
                         </span>
-                      </div>
+                      </span>
+                      {/* <div className="star-rating" title="Rated 4.00 out of 5">
+                        <span style={{ width: "80%" }}>
+                          <strong className="rating">
+                            {singledata.imdbRating} out of 10
+                          </strong>
+                        </span>
+                      </div> */}
+                    </li>
+                    <h4>Other Ratings</h4>
+                    <strong>Source:</strong>
+                    {ratings.map((item) => {
+                      return (
+                        <div key={Math.random() * 10}>
+                          <li>{item.Source}</li>
+                        </div>
+                      );
+                    })}
+                    <li>
+                      <strong>Year:</strong> {singledata.Year}
+                    </li>
+
+                    <li>
+                      <strong>Length:</strong> {singledata.Runtime}
                     </li>
                     <li>
-                      <strong>Length:</strong> 98 min
+                      <strong>Premiere:</strong> {singledata.Released} (
+                      {singledata.Country})
                     </li>
                     <li>
-                      <strong>Premiere:</strong> 22 March 2013 (USA)
+                      <strong>Language:</strong> {singledata.Language}
                     </li>
+                    <li></li>
                     <li>
-                      <strong>Category:</strong> Animation/Adventure/Comedy
+                      <strong>Category:</strong> {singledata.Genre}
                     </li>
                   </ul>
 
                   <ul className="starring">
                     <li>
-                      <strong>Directors:</strong> Kirk de Mico (as Kirk DeMico).
-                      Chris Sanders
+                      <strong>Directors:</strong> {singledata.Director}
                     </li>
                     <li>
-                      <strong>Writers:</strong> Chris Sanders (screenplay), Kirk
-                      De Micco (screenplay)
+                      <strong>Writers:</strong> {singledata.Writer}
                     </li>
                     <li>
-                      <strong>Stars:</strong> Nicolas Cage, Ryan Reynolds, Emma
-                      Stone
+                      <strong>Actors:</strong> {singledata.Actors}
+                    </li>
+                    <li>
+                      <strong>ImdbVotes:</strong> {singledata.imdbVotes}
+                    </li>
+                    <li>
+                      <strong>BoxOffice:</strong> {singledata.BoxOffice}
+                    </li>
+                    <li>
+                      <strong>Awards:</strong> {singledata.Awards}
                     </li>
                   </ul>
                 </div>
               </div>
               <div className="entry-content">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Vestibulum ac pharetra libero. Integer in suscipit diam, sit
-                  amet eleifend nunc. Curabitur egestas nunc nulla, in aliquet
-                  risus efficitur quis. Vivamus facilisis est libero, vitae
-                  iaculis nulla cursus in. Suspendisse potenti. In et fringilla
-                  ipsum, quis varius quam. Morbi eleifend venenatis diam finibus
-                  vehicula. Suspendisse eu blandit metus. Sed feugiat
-                  pellentesque turpis, in lacinia ipsum. Vivamus nec luctus
-                  orci.
-                </p>
-                <p>
-                  Aenean vehicula eget risus sit amet posuere. Maecenas id risus
-                  maximus, malesuada leo eget, pellentesque arcu. Phasellus
-                  vitae leo rhoncus, consectetur mauris vitae, lacinia quam.
-                  Nunc turpis erat, accumsan eget justo quis, auctor ultricies
-                  magna. Mauris sodales, risus sit amet hendrerit tincidunt,
-                  erat ante facilisis sapien, sit amet maximus neque massa a
-                  felis. Nullam consectetur justo massa, vel commodo metus
-                  gravida in. Aliquam erat volutpat. Nullam a lorem sed lorem
-                  euismod gravida a eu velit. Lorem ipsum dolor sit amet,
-                  consectetur adipiscing elit. Donec venenatis ac ligula vel
-                  pharetra. Aenean vitae nulla sed dui volutpat euismod. Nam ex
-                  quam, consequat id rutrum sed, porttitor id lectus. Vestibulum
-                  venenatis consectetur justo ut sagittis. Duis dignissim
-                  tincidunt quam, nec pulvinar libero luctus nec. Morbi blandit
-                  nec lorem in ullamcorper.
-                </p>
-                <p>
-                  Vestibulum et odio massa. Integer at odio ipsum. Proin vitae
-                  tristique nibh. Aenean semper ante sit amet ante ultricies
-                  tincidunt. Curabitur cursus, urna non ultricies posuere, dolor
-                  lacus cursus lorem, a dapibus nibh ex eget sem. Aliquam semper
-                  sagittis sapien a fermentum. Nullam sed iaculis lacus, et
-                  imperdiet risus. Praesent quis turpis ac nunc sodales
-                  tincidunt. Aliquam at leo odio. Sed a tempor nisl, et mattis
-                  felis. Nam mauris nunc, commodo ac orci ut, auctor viverra
-                  mauris.
-                </p>
-                <p>
-                  Quisque nec justo vitae metus consectetur ultrices. Duis
-                  venenatis lorem massa, eu pulvinar quam faucibus sed. Nulla
-                  fringilla lorem sit amet sagittis mattis. Nunc in leo a odio
-                  mollis consectetur. Etiam ac nisl eget diam ullamcorper porta.
-                  Aliquam consectetur neque eget metus egestas sollicitudin.
-                  Curabitur ultrices urna et feugiat malesuada.
-                </p>
-                <p>
-                  Nulla facilisi. Fusce sed dapibus leo, eu lobortis ante. Duis
-                  luctus mauris in ante semper, ut feugiat nisi condimentum.
-                  Nullam a odio et justo suscipit tempus. Vestibulum placerat
-                  dapibus quam, a egestas turpis efficitur id. Integer suscipit
-                  placerat placerat. Phasellus in lorem quis leo egestas
-                  accumsan. Nam et euismod ligula. Duis nec erat aliquam,
-                  sollicitudin diam non, ornare leo. Pellentesque augue leo,
-                  faucibus in nunc nec, tincidunt ullamcorper tortor. Phasellus
-                  aliquam condimentum elit. Nulla facilisi. Donec magna libero,
-                  bibendum eu faucibus et, mattis at felis. Integer turpis nibh,
-                  blandit nec elit vel, euismod laoreet quam. Donec vel ante
-                  nisi. Nunc luctus a tellus non.
-                </p>
+                <h4>Plot</h4>
+                <p>{singledata.Plot}</p>
               </div>
             </div>
+            ;
           </div>
         </div>
       </main>

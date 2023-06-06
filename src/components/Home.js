@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Banner from "./Banner";
 import LatestMovie from "./LatestMovie";
 import { Link } from "react-router-dom";
+
 function Home() {
   return (
     <div>
