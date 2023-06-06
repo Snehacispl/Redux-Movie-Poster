@@ -10,6 +10,7 @@ import { Provider } from "react-redux";
 import store from "./components/store/store";
 import Cart from "./components/Cart";
 import Footer from "./components/Footer";
+import ThankYou from "./components/ThankYou";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
 
             <Route path="/MovieDetails/:id" element={<MovieDetail />} />
             <Route path="/cart" element={<Cart />} />
+            <Route path="/Thank-you" element={<ThankYou />} />
           </Routes>
           <Footer />
         </BrowserRouter>

@@ -10,14 +10,21 @@ import {
   deccartquantity,
   cartTotalqty,
 } from "./store/cartSlice";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const totalprice = useSelector(cartTotal).toFixed(2);
   const totalqty = useSelector(cartTotalqty);
+  const cartitemnames = [];
+  cart.map((item) => {
+    if (!cartitemnames.includes(item.Title)) {
+      cartitemnames.push(item.Title + ", ");
+    }
+  });
   // const paypal = useRef();
 
   // const paypalfunc = () => {
@@ -137,6 +144,7 @@ const Cart = () => {
               return actions.order.create({
                 purchase_units: [
                   {
+                    description: JSON.stringify(cartitemnames),
                     amount: {
                       value: 0.01,
                     },
@@ -147,7 +155,11 @@ const Cart = () => {
             onApprove={(data, actions) => {
               return actions.order.capture().then((details) => {
                 const name = details.payer.name.given_name;
-                alert(`Transaction completed by ${name}`);
+                const orderdata = actions.order.capture();
+                console.log(orderdata);
+                setTimeout(() => {
+                  navigate("/Thank-you", { state: orderdata });
+                }, 3000);
               });
             }}
           />
