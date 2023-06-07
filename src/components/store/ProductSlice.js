@@ -12,6 +12,7 @@ const productSlice = createSlice({
     data: [],
     singledata: [],
     ratings: [],
+    searchdata: [],
     status: STATUSES.IDLE,
     totalresult: 0,
   },
@@ -31,6 +32,9 @@ const productSlice = createSlice({
     setratings(state, action) {
       state.ratings = action.payload;
     },
+    searchproducts(state, action) {
+      state.searchdata = action.payload;
+    },
   },
 });
 export const {
@@ -39,6 +43,7 @@ export const {
   settotalresult,
   setsingleproduct,
   setratings,
+  searchproducts,
 } = productSlice.actions;
 export default productSlice.reducer;
 
@@ -69,6 +74,22 @@ export function fetchproductdetails(imdbid) {
           dispatch(setsingleproduct(response.data));
           dispatch(setratings(response.data.Ratings));
           console.log(response.data.Ratings);
+        });
+    } catch (err) {
+      console.log(err);
+      dispatch(setstatus(STATUSES.ERROR));
+    }
+  };
+}
+export function searchproductbytitle(title) {
+  return async function fetchproductsthunk(dispatch, getstate) {
+    dispatch(setstatus(STATUSES.LOADING));
+    try {
+      axios
+        .get(`https://www.omdbapi.com/?&apikey=b3b3b78&t=${title}`)
+        .then((response) => {
+          dispatch(searchproducts(response.data));
+          console.log(response.data);
         });
     } catch (err) {
       console.log(err);
