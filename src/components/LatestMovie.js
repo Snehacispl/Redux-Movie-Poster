@@ -6,8 +6,8 @@ function LatestMovie(props) {
   const { data } = useSelector((state) => state.product);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchproducts(1));
-  }, [data]);
+    return () => dispatch(fetchproducts(1));
+  }, []);
   return (
     <div>
       <div className="row">

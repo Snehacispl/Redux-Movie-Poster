@@ -1,7 +1,8 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "../assets/css/cartpage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+
 import {
   removefromcart,
   clearCart,
@@ -20,13 +21,18 @@ const Cart = () => {
   const totalprice = useSelector(cartTotal).toFixed(2);
   const totalqty = useSelector(cartTotalqty);
   const cartitemnames = [];
+
   cart.map((item) => {
     if (!cartitemnames.includes(item.Title)) {
       cartitemnames.push(item.Title + ", ");
     }
   });
-  // const paypal = useRef();
 
+  const totalp = useRef();
+  // const paypal = useRef();
+  // useEffect(() => {
+  //   return () => paypalfunc();
+  // }, [paypal]);
   // const paypalfunc = () => {
   //   const cartitemnames = [];
   //   cart.map((item) => {
@@ -45,8 +51,7 @@ const Cart = () => {
   //               description: JSON.stringify(cartitemnames),
   //               amount: {
   //                 currency_code: "USD",
-  //                 //value: totalprice,
-  //                 value: 1.0,
+  //                 value: totalp.current.value,
   //               },
   //             },
   //           ],
@@ -63,9 +68,6 @@ const Cart = () => {
   //     .render(paypal.current);
   // };
 
-  // useEffect(() => {
-  //   //  paypalfunc();
-  // });
   return (
     <div className="CartContainer">
       <div className="Header">
@@ -125,14 +127,25 @@ const Cart = () => {
       <div className="checkout">
         <div className="total">
           <div>
-            <div className="Subtotal">Sub-Total</div>
-            <div className="items">{totalqty} items</div>
+            <div className="Subtotal" style={{ color: "white" }}>
+              Sub-Total
+            </div>
+            <div className="items" style={{ color: "white" }}>
+              {totalqty} items
+            </div>
           </div>
-          <div className="total-amount" style={{ color: "white" }}>
+          <div
+            className="total-amount"
+            style={{ color: "white" }}
+            ref={totalp}
+            price={totalprice}
+          >
             ${totalprice}
           </div>
         </div>
-        <div>{/* <div ref={paypal}></div> */}</div>
+        {/* <div>
+          <div ref={paypal}></div>
+        </div> */}
         <PayPalScriptProvider
           options={{
             "client-id":
@@ -146,6 +159,7 @@ const Cart = () => {
                   {
                     description: JSON.stringify(cartitemnames),
                     amount: {
+                      // value: totalp.current.getAttribute("price"),
                       value: 0.01,
                     },
                   },

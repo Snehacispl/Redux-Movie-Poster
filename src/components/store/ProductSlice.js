@@ -53,6 +53,7 @@ export function fetchproducts(page) {
     try {
       axios
         .get(`https://www.omdbapi.com/?s=batman&apikey=b3b3b78&&page=${page}`)
+
         .then((response) => {
           dispatch(settotalresult(response.data.totalResults));
           dispatch(setproducts(response.data.Search));
@@ -70,6 +71,7 @@ export function fetchproductdetails(imdbid) {
     try {
       axios
         .get(`https://www.omdbapi.com/?&apikey=b3b3b78&i=${imdbid}`)
+
         .then((response) => {
           dispatch(setsingleproduct(response.data));
           dispatch(setratings(response.data.Ratings));
@@ -87,8 +89,10 @@ export function searchproductbytitle(title) {
     try {
       axios
         .get(`https://www.omdbapi.com/?&apikey=b3b3b78&t=${title}`)
+
         .then((response) => {
           dispatch(searchproducts(response.data));
+          dispatch(setstatus(STATUSES.IDLE));
           console.log(response.data);
         });
     } catch (err) {

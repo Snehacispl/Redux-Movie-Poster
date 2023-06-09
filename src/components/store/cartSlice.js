@@ -3,9 +3,16 @@ const { createSlice } = require("@reduxjs/toolkit");
 const cartSlice = createSlice({
   name: "cart",
   initialState: [],
-
   reducers: {
     addtocart(state, action) {
+      const duplicate = state.find(
+        (item) => item.imdbID === action.payload.imdbID
+      );
+      if (!duplicate) {
+        state.push(action.payload);
+      }
+    },
+    addtowishlist(state, action) {
       const duplicate = state.find(
         (item) => item.imdbID === action.payload.imdbID
       );
@@ -23,6 +30,7 @@ const cartSlice = createSlice({
       state.map((item) => {
         if (item.imdbID === action.payload.imdbID) {
           item.quantity = item.quantity + 1;
+          // item.price = item.quantity + 1 * item.price;
         }
       });
     },
@@ -32,6 +40,7 @@ const cartSlice = createSlice({
           if (item.imdbID === action.payload.imdbID) {
             if (item.quantity >= 1) {
               item.quantity = item.quantity - 1;
+              // item.price = item.quantity * item.price;
             }
           }
         });
@@ -41,23 +50,6 @@ const cartSlice = createSlice({
     },
   },
 });
-// export const gettotal = (state) => {
-//   let totalprice = 0;
-//   state.cart.map((item) => {
-//     return (totalprice += item.price);
-//   });
-// };
-// export const gettotal = (state) => {
-//   // state.cart.reduce((totalprice, curElem) => {
-//   //   let { price, quantity } = curElem;
-//   //   totalprice = totalprice + price * quantity;
-//   //   console.log(totalprice);
-//   // }, 0);
-//   let totalprice = 0;
-//   state.cart.map((item) => {
-//     return (totalprice += item.price * item.quantity);
-//   });
-// };
 
 export const cartTotal = (state) =>
   state.cart.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -70,5 +62,8 @@ export const {
   clearCart,
   inccartquantity,
   deccartquantity,
+  carttotalamount,
+  cartTotalfunc,
+  addtowishlist,
 } = cartSlice.actions;
 export default cartSlice.reducer;
