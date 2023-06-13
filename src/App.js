@@ -11,6 +11,7 @@ import store from "./components/store/store";
 import Cart from "./components/Cart";
 import Footer from "./components/Footer";
 import ThankYou from "./components/ThankYou";
+import Wishlist from "./components/Wishlist";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
             <Route path="/MovieDetails/:id" element={<MovieDetail />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/Thank-you" element={<ThankYou />} />
+            <Route path="/wishlist" element={<Wishlist />} />
           </Routes>
           <Footer />
         </BrowserRouter>

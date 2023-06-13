@@ -13,6 +13,7 @@ const productSlice = createSlice({
     singledata: [],
     ratings: [],
     searchdata: [],
+    wishlistproduct: [],
     status: STATUSES.IDLE,
     totalresult: 0,
   },
@@ -35,6 +36,19 @@ const productSlice = createSlice({
     searchproducts(state, action) {
       state.searchdata = action.payload;
     },
+    setwishlistproduct(state, action) {
+      const duplicate = state.wishlistproduct.find(
+        (item) => item.imdbID === action.payload.imdbID
+      );
+      if (!duplicate) {
+        state.wishlistproduct = [...state.wishlistproduct, action.payload];
+      }
+    },
+    removefromwishlist(state, action) {
+      state.wishlistproduct = state.wishlistproduct.filter(
+        (item) => item.imdbID !== action.payload.imdbID
+      );
+    },
   },
 });
 export const {
@@ -44,6 +58,8 @@ export const {
   setsingleproduct,
   setratings,
   searchproducts,
+  setwishlistproduct,
+  removefromwishlist,
 } = productSlice.actions;
 export default productSlice.reducer;
 
@@ -56,7 +72,15 @@ export function fetchproducts(page) {
 
         .then((response) => {
           dispatch(settotalresult(response.data.totalResults));
-          dispatch(setproducts(response.data.Search));
+
+          let newdata = response.data.Search.map((item) =>
+            Object.assign({}, item, {
+              price: parseFloat((Math.random() * 9999).toFixed(2)),
+              quantity: 1,
+            })
+          );
+          console.log(newdata);
+          dispatch(setproducts(newdata));
           dispatch(setstatus(STATUSES.IDLE));
         });
     } catch (err) {
@@ -73,9 +97,33 @@ export function fetchproductdetails(imdbid) {
         .get(`https://www.omdbapi.com/?&apikey=b3b3b78&i=${imdbid}`)
 
         .then((response) => {
-          dispatch(setsingleproduct(response.data));
+          let singleproddetail = Object.assign({}, response.data, {
+            price: parseFloat((Math.random() * 9999).toFixed(2)),
+            quantity: 1,
+          });
+
+          dispatch(setsingleproduct(singleproddetail));
           dispatch(setratings(response.data.Ratings));
-          console.log(response.data.Ratings);
+        });
+    } catch (err) {
+      console.log(err);
+      dispatch(setstatus(STATUSES.ERROR));
+    }
+  };
+}
+export function fetchwishlistdetails(imdbid) {
+  return async function fetchproductsthunk(dispatch, getstate) {
+    dispatch(setstatus(STATUSES.LOADING));
+    try {
+      axios
+        .get(`https://www.omdbapi.com/?&apikey=b3b3b78&i=${imdbid}`)
+
+        .then((response) => {
+          let wishlistdata = Object.assign({}, response.data, {
+            price: parseFloat((Math.random() * 9999).toFixed(2)),
+            quantity: 1,
+          });
+          dispatch(setwishlistproduct(wishlistdata));
         });
     } catch (err) {
       console.log(err);
@@ -91,7 +139,12 @@ export function searchproductbytitle(title) {
         .get(`https://www.omdbapi.com/?&apikey=b3b3b78&t=${title}`)
 
         .then((response) => {
-          dispatch(searchproducts(response.data));
+          let searchdataitem = Object.assign({}, response.data, {
+            price: parseFloat((Math.random() * 9999).toFixed(2)),
+            quantity: 1,
+          });
+
+          dispatch(searchproducts(searchdataitem));
           dispatch(setstatus(STATUSES.IDLE));
           console.log(response.data);
         });

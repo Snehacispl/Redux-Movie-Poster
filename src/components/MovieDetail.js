@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { fetchproductdetails } from "./store/ProductSlice";
 import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,10 +12,10 @@ function MovieDetail() {
   useEffect(() => {
     dispatch(fetchproductdetails(params.id));
   }, []);
-  let dataitem = Object.assign({}, singledata, {
-    price: parseFloat((Math.random() * 9999).toFixed(2)),
-    quantity: 1,
-  });
+  // let singledata = Object.assign({}, singledata, {
+  //   price: parseFloat((Math.random() * 9999).toFixed(2)),
+  //   quantity: 1,
+  // });
   return (
     <>
       <main className="main-content">
@@ -55,54 +55,54 @@ function MovieDetail() {
                       );
                     })}
                     <li>
-                      <strong>Year:</strong> {dataitem.Year}
+                      <strong>Year:</strong> {singledata.Year}
                     </li>
 
                     <li>
-                      <strong>Length:</strong> {dataitem.Runtime}
+                      <strong>Length:</strong> {singledata.Runtime}
                     </li>
                     <li>
-                      <strong>Premiere:</strong> {dataitem.Released} (
-                      {dataitem.Country})
+                      <strong>Premiere:</strong> {singledata.Released} (
+                      {singledata.Country})
                     </li>
                     <li>
-                      <strong>Language:</strong> {dataitem.Language}
+                      <strong>Language:</strong> {singledata.Language}
                     </li>
                     <li></li>
                     <li>
-                      <strong>Category:</strong> {dataitem.Genre}
+                      <strong>Category:</strong> {singledata.Genre}
                     </li>
                   </ul>
 
                   <ul className="starring">
                     <li>
-                      <strong>Directors:</strong> {dataitem.Director}
+                      <strong>Directors:</strong> {singledata.Director}
                     </li>
                     <li>
-                      <strong>Writers:</strong> {dataitem.Writer}
+                      <strong>Writers:</strong> {singledata.Writer}
                     </li>
                     <li>
-                      <strong>Actors:</strong> {dataitem.Actors}
+                      <strong>Actors:</strong> {singledata.Actors}
                     </li>
                     <li>
-                      <strong>ImdbVotes:</strong> {dataitem.imdbVotes}
+                      <strong>ImdbVotes:</strong> {singledata.imdbVotes}
                     </li>
                     <li>
-                      <strong>BoxOffice:</strong> {dataitem.BoxOffice}
+                      <strong>BoxOffice:</strong> {singledata.BoxOffice}
                     </li>
                     <li>
-                      <strong>Awards:</strong> {dataitem.Awards}
+                      <strong>Awards:</strong> {singledata.Awards}
                     </li>
                   </ul>
                 </div>
               </div>
               <div className="entry-content">
                 <h4>Plot</h4>
-                <p>{dataitem.Plot}</p>
+                <p>{singledata.Plot}</p>
               </div>
 
-              <p>${dataitem.price}</p>
-              <button onClick={() => dispatch(addtocart(dataitem))}>
+              <p>${singledata.price}</p>
+              <button onClick={() => dispatch(addtocart(singledata))}>
                 Add To Cart
               </button>
             </div>

@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
   const cart = useSelector((state) => state.cart);
+  const { wishlistproduct } = useSelector((state) => state.product);
+
   return (
     <>
       <header className="site-header">
@@ -37,19 +39,14 @@ function Navbar() {
                 </Link>
               </li>
               <li className="menu-item">
-                <Link className="nav-link" to="/cart">
-                  wishlist
+                <Link className="nav-link" to="/wishlist">
+                  Wishlist
                   <span className="top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    {cart.length}
+                    {wishlistproduct.length}
                   </span>
                 </Link>
               </li>
             </ul>
-
-            {/* <form action="#" className="search-form">
-							<input type="text" placeholder="Search..."/>
-							<button><i className="fa fa-search"></i></button>
-						</form> */}
           </div>
 
           <div className="mobile-navigation"></div>
