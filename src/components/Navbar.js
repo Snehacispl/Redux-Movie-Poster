@@ -21,7 +21,7 @@ function Navbar() {
             <ul className="menu">
               <li className="menu-item">
                 <Link className="nav-link active" aria-current="page" to="/">
-                  Homeee
+                  Homes
                 </Link>
               </li>
               <li className="menu-item">
