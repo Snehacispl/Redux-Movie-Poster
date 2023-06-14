@@ -3,14 +3,17 @@ import noimg from "../assets/images/No_Image_Available.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { addtocart } from "./store/cartSlice";
 
-import { fetchproducts, searchproductbytitle } from "./store/ProductSlice";
+import {
+  fetchproducts,
+  searchproductbytitle,
+  fetchwishlistdetails,
+} from "./store/ProductSlice";
 import ReactPaginate from "react-paginate";
 const MovieList = () => {
   const dispatch = useDispatch();
   const [page, setpage] = useState(1);
   const [title, settitle] = useState("");
 
-  const [pageCount, setPageCount] = useState(1);
   const [display, setdisplay] = useState(false);
   const { data, totalresult, searchdata } = useSelector(
     (state) => state.product
@@ -20,22 +23,9 @@ const MovieList = () => {
     dispatch(fetchproducts(e.selected + 1));
   };
   useEffect(() => {
-    dispatch(fetchproducts(page));
+    return () => dispatch(fetchproducts(page));
+  }, []);
 
-    setPageCount(Math.ceil(totalresult / 10));
-  }, [page]);
-
-  let products = data.map((item) =>
-    Object.assign({}, item, {
-      price: parseFloat((Math.random() * 9999).toFixed(2)),
-      quantity: 1,
-    })
-  );
-
-  let result = Object.assign({}, searchdata, {
-    price: parseFloat((Math.random() * 9999).toFixed(2)),
-    quantity: 1,
-  });
   const onsearchhandler = (e) => {
     dispatch(searchproductbytitle(title));
     setdisplay(true);
@@ -55,7 +45,7 @@ const MovieList = () => {
               <h1>MovieList</h1>
 
               {!title &&
-                products.map((item) => {
+                data.map((item) => {
                   return (
                     <div
                       className="movie"
@@ -75,35 +65,56 @@ const MovieList = () => {
                       <button onClick={() => dispatch(addtocart(item))}>
                         Add To Cart
                       </button>
+                      <button
+                        onClick={() =>
+                          dispatch(fetchwishlistdetails(item.imdbID))
+                        }
+                      >
+                        Add To WishList <i className="fa fa-heart"></i>
+                      </button>
                     </div>
                   );
                 })}
-              {display && result && (
+              {display && searchdata && (
                 <div
                   className="movie"
                   style={{ resultwidth: "18rem" }}
-                  key={result.imdbID}
+                  key={searchdata.imdbID}
                 >
                   <figure className="movie-poster">
                     <img
-                      src={result.Poster !== "N/A" ? result.Poster : noimg}
+                      src={
+                        searchdata.Poster !== "N/A" ? searchdata.Poster : noimg
+                      }
                       className="card-img-top"
-                      alt={result.Title}
+                      alt={searchdata.Title}
                     />
                   </figure>
-                  <div className="movie-title">{result.Title}</div>
-                  <p className="card-text"> {result.Year}</p>
-                  {result.imdbID && (
-                    <p className="card-text"> ${result.price}</p>
+                  <div className="movie-title">{searchdata.Title}</div>
+                  <p className="card-text"> {searchdata.Year}</p>
+                  {searchdata.imdbID && (
+                    <p className="card-text"> ${searchdata.price}</p>
                   )}
-                  {result.imdbID && (
-                    <button onClick={() => dispatch(addtocart(result))}>
-                      Add To Cart
-                    </button>
+                  {searchdata.imdbID && (
+                    <>
+                      {" "}
+                      <button onClick={() => dispatch(addtocart(searchdata))}>
+                        Add To Cart
+                      </button>
+                      <button
+                        onClick={() =>
+                          dispatch(fetchwishlistdetails(searchdata.imdbID))
+                        }
+                      >
+                        Add To WishList <i className="fa fa-heart"></i>
+                      </button>
+                    </>
                   )}
                 </div>
               )}
-              {!result.imdbID && title && <p>No Movies Found By This Title</p>}
+              {!searchdata.imdbID && title && display && (
+                <p>No Movies Found By This Title</p>
+              )}
             </div>
 
             <div className="pagination">
@@ -112,7 +123,7 @@ const MovieList = () => {
                 nextLabel={"next"}
                 breakLabel={"..."}
                 breakClassName={"break-me"}
-                pageCount={pageCount}
+                pageCount={Math.ceil(totalresult / 10)}
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={2}
                 onPageChange={handlePageClick}

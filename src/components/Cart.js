@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import "../assets/css/cartpage.css";
 import { useDispatch, useSelector } from "react-redux";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-
+import noimg from "../assets/images/No_Image_Available.jpg";
 import {
   removefromcart,
   clearCart,
@@ -12,6 +12,7 @@ import {
   cartTotalqty,
 } from "./store/cartSlice";
 import { useNavigate } from "react-router-dom";
+import { fetchwishlistdetails } from "./store/ProductSlice";
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
@@ -82,7 +83,7 @@ const Cart = () => {
             <div className="Cart-Items" key={item.imdbID}>
               <div className="image-box">
                 <img
-                  src={item.Poster}
+                  src={item.Poster !== "N/A" ? item.Poster : noimg}
                   style={{ height: "120px" }}
                   alt={item.Title}
                 />
@@ -108,8 +109,11 @@ const Cart = () => {
               </div>
               <div className="prices">
                 <div className="amount">${item.price}</div>
-                <div className="save">
-                  <u>Save for later</u>
+                <div
+                  className="save"
+                  onClick={() => dispatch(fetchwishlistdetails(item.imdbID))}
+                >
+                  Add To WishList <i className="fa fa-heart"></i>
                 </div>
                 <div
                   className="remove"
@@ -168,7 +172,7 @@ const Cart = () => {
             }}
             onApprove={(data, actions) => {
               return actions.order.capture().then((details) => {
-                const name = details.payer.name.given_name;
+                // const name = details.payer.name.given_name;
                 const orderdata = actions.order.capture();
                 console.log(orderdata);
                 setTimeout(() => {

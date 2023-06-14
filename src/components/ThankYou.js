@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useLocation } from "react-router-dom";
 
 const ThankYou = (orderdata) => {
@@ -8,30 +8,35 @@ const ThankYou = (orderdata) => {
   return (
     <main className="main-content">
       <div className="container">
-        <p>Order id :{data && data.value.id} </p>
+        <h1>Thank You For Your Order</h1>
+        <h3>Transaction ID</h3>
+        <p>{data && data.value.id} </p>
         {data &&
           data.value.purchase_units.map((item) => {
             return (
-              <>
-                <h2>Shipping Address</h2>
+              <div key={item}>
+                <h3>Item Ordered</h3>
+                <ul>
+                  <li>{JSON.parse(item.description)}</li>
+                </ul>
+                <h3>Shipping Address</h3>
                 <span>
-                  Full name: {item.shipping.name.full_name}
+                  <b>Full name: </b> {item.shipping.name.full_name}
                   <br />
-                  Address: {item.shipping.address.address_line_1},
+                  <b>Address: </b> {item.shipping.address.address_line_1},
                   {item.shipping.address.admin_area_1},
-                  {item.shipping.address.admin_area_2},
+                  {item.shipping.address.admin_area_2}
                   <br />
-                  Country Code:
-                  {item.shipping.address.country_code},
+                  <b>Country Code: </b>
+                  {item.shipping.address.country_code}
                   <br />
-                  Zip Code:
+                  <b>Zip Code: </b>
                   {item.shipping.address.postal_code}
                 </span>
                 <br></br>
-                <h2>Total</h2>
-                Total : {item.amount.value}
-                {item.amount.currency_code}
-              </>
+                <h3>Total</h3>${item.amount.value}
+                {/* {item.amount.currency_code} */}
+              </div>
             );
           })}
       </div>
