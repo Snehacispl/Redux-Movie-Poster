@@ -1673,7 +1673,7 @@ ul.arrow {
  * Footer Styles
  */
 .site-footer {
-  padding: 50px 0; }
+  padding: 50px 0;     background: black;}
   .site-footer .widget {
     margin-bottom: 30px; }
   .site-footer .widget-title {
@@ -1701,3 +1701,9 @@ ul.arrow {
       color: #ffaa3c; }
   .site-footer .colophon {
     padding-top: 30px; }
+
+    .main2 {
+     height: 100vh;
+      width: 100%;
+    }
+   

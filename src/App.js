@@ -1,5 +1,6 @@
 import "./App.css";
 import Home from "./components/Home";
+
 import MovieList from "./components/MovieList";
 import MovieDetail from "./components/MovieDetail";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -31,6 +32,7 @@ function App() {
           <Footer />
         </BrowserRouter>
       </Provider>
+      
     </div>
   );
 }
