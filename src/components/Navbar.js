@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 function Navbar() {
   const cart = useSelector((state) => state.cart);
   const { wishlistproduct } = useSelector((state) => state.product);
+  const [active, setactive] = useState("Home");
 
   return (
     <>
@@ -20,18 +21,37 @@ function Navbar() {
             </button>
             <ul className="menu">
               <li className="menu-item">
-                <Link className="nav-link active" aria-current="page" to="/">
+                <Link
+                  className={`nav-link ${
+                    active === "Home" ? "activeclass" : ""
+                  }`}
+                  aria-current="page"
+                  to="/"
+                  onClick={() => setactive("Home")}
+                >
                   Home
                 </Link>
               </li>
               <li className="menu-item">
-                <Link className="nav-link" to="/MovieList">
+                <Link
+                  className={`nav-link ${
+                    active === "List" ? "activeclass" : ""
+                  }`}
+                  to="/MovieList"
+                  onClick={() => setactive("List")}
+                >
                   Movies
                 </Link>
               </li>
 
               <li className="menu-item">
-                <Link className="nav-link" to="/cart">
+                <Link
+                  className={`nav-link ${
+                    active === "Cart" ? "activeclass" : ""
+                  }`}
+                  to="/cart"
+                  onClick={() => setactive("Cart")}
+                >
                   Cart
                   <span className="top-0 start-100 translate-middle badge rounded-pill bg-danger">
                     {cart.length}
@@ -39,7 +59,13 @@ function Navbar() {
                 </Link>
               </li>
               <li className="menu-item">
-                <Link className="nav-link" to="/wishlist">
+                <Link
+                  className={`nav-link ${
+                    active === "Wish" ? "activeclass" : ""
+                  }`}
+                  to="/wishlist"
+                  onClick={() => setactive("Wish")}
+                >
                   Wishlist
                   <span className="top-0 start-100 translate-middle badge rounded-pill bg-danger">
                     {wishlistproduct.length}
