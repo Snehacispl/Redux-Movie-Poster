@@ -16,9 +16,11 @@ function LatestMovie(props) {
           return (
             <div className="col-sm-6 col-md-3" key={item.imdbID}>
               <div className="latest-movie">
-                <Link to={`/MovieDetails/${item.imdbID}`}>
-                  <img src={item.Poster} alt={item.Title} />
-                </Link>
+                <img src={item.Poster} alt={item.Title} />
+                <button>
+                  {" "}
+                  <Link to={`/MovieDetails/${item.imdbID}`}>View </Link>
+                </button>
               </div>
             </div>
           );

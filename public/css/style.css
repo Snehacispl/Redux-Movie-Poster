@@ -362,7 +362,7 @@ form input[type="reset"]:focus,
 }
 .slider .slides {
   list-style: none;
-  *zoom: 1;
+  zoom: 1;
 }
 .slider .slides:after {
   content: " ";
@@ -614,7 +614,7 @@ ul.arrow li a:hover {
 
 .contact-form {
   margin-bottom: 30px;
-  *zoom: 1;
+  zoom: 1;
 }
 .contact-form:after {
   content: " ";
@@ -704,7 +704,7 @@ ul.arrow li a:hover {
   margin-left: auto;
   padding-left: 15px;
   padding-right: 15px;
-  *zoom: 1;
+  zoom: 1;
 }
 .container:after {
   content: " ";
@@ -734,7 +734,7 @@ ul.arrow li a:hover {
   margin-left: auto;
   padding-left: 15px;
   padding-right: 15px;
-  *zoom: 1;
+  zoom: 1;
 }
 .container-fluid:after {
   content: " ";
@@ -747,7 +747,7 @@ ul.arrow li a:hover {
 .row {
   margin-left: -15px;
   margin-right: -15px;
-  *zoom: 1;
+  zoom: 1;
 }
 .row:after {
   content: " ";
@@ -1938,7 +1938,7 @@ ul.arrow li a:hover {
  */
 .site-header {
   padding: 50px 0;
-  *zoom: 1;
+  zoom: 1;
 }
 .site-header:after {
   content: " ";

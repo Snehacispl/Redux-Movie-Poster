@@ -10,10 +10,18 @@ function MovieDetail() {
   const { wishlistproduct } = useSelector((state) => state.product);
 
   const [title, settitle] = useState("");
+  const [itemfound, setitemfound] = useState(true);
   const [display, setdisplay] = useState(false);
 
   const onsearchhandler = (e) => {
     setdisplay(true);
+    wishlistproduct.filter((item) => {
+      if (item.Title.toLowerCase().includes(title.toLowerCase())) {
+        setitemfound(true);
+      } else {
+        setitemfound(false);
+      }
+    });
   };
   return (
     <>
@@ -59,39 +67,37 @@ function MovieDetail() {
                   );
                 })}
               {display &&
-                wishlistproduct
-                  .filter((item) =>
-                    item.Title.toLowerCase().includes(title.toLowerCase())
-                  )
-
-                  .map((item) => {
-                    return (
-                      <div
-                        className="movie"
-                        style={{ width: "18rem" }}
-                        key={item.imdbID}
+                itemfound &&
+                wishlistproduct.map((item) => {
+                  return (
+                    <div
+                      className="movie"
+                      style={{ width: "18rem" }}
+                      key={item.imdbID}
+                    >
+                      <figure className="movie-poster">
+                        <img
+                          src={item.Poster !== "N/A" ? item.Poster : noimg}
+                          className="card-img-top"
+                          alt={item.Title}
+                        />
+                      </figure>
+                      <div className="movie-title">{item.Title}</div>
+                      <p className="card-text"> {item.Year}</p>
+                      <p className="card-text"> ${item.price}</p>
+                      <button
+                        onClick={() => dispatch(removefromwishlist(item))}
                       >
-                        <figure className="movie-poster">
-                          <img
-                            src={item.Poster !== "N/A" ? item.Poster : noimg}
-                            className="card-img-top"
-                            alt={item.Title}
-                          />
-                        </figure>
-                        <div className="movie-title">{item.Title}</div>
-                        <p className="card-text"> {item.Year}</p>
-                        <p className="card-text"> ${item.price}</p>
-                        <button
-                          onClick={() => dispatch(removefromwishlist(item))}
-                        >
-                          Remove From Collection
-                        </button>
-                        <button onClick={() => dispatch(addtocart(item))}>
-                          Add To Cart
-                        </button>
-                      </div>
-                    );
-                  })}
+                        Remove From Collection
+                      </button>
+                      <button onClick={() => dispatch(addtocart(item))}>
+                        Add To Cart
+                      </button>
+                    </div>
+                  );
+                })}
+
+              {!itemfound && title && <p> No Result Found</p>}
             </div>
           </div>
         </div>

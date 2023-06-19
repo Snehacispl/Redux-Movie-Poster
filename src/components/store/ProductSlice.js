@@ -101,7 +101,7 @@ export function fetchproductdetails(imdbid) {
             price: parseFloat((Math.random() * 9999).toFixed(2)),
             quantity: 1,
           });
-
+          console.log(singleproddetail);
           dispatch(setsingleproduct(singleproddetail));
           dispatch(setratings(response.data.Ratings));
         });

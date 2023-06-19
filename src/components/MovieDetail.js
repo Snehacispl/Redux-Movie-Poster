@@ -46,11 +46,13 @@ function MovieDetail() {
                       </span>
                     </li>
                     <h4>Other Ratings</h4>
-                    <strong>Source:</strong>
+
                     {ratings.map((item) => {
                       return (
                         <div key={Math.random() * 10}>
-                          <li>{item.Source}</li>
+                          <li>
+                            {item.Source} - {item.Value}
+                          </li>
                         </div>
                       );
                     })}
