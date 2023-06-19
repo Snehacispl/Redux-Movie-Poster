@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Banner from "./Banner";
 import LatestMovie from "./LatestMovie";
-import { Link } from "react-router-dom";
 
 function Home() {
   return (
@@ -15,7 +14,7 @@ function Home() {
               </div>
               <div className="col-md-3">
                 <div className="row">
-                  <div className="col-sm-6 col-md-12">
+                  {/* <div className="col-sm-6 col-md-12">
                     <div className="latest-movie">
                       <Link>
                         <img src="images/thumb-1.jpg" alt="Movie 1" />
@@ -28,7 +27,7 @@ function Home() {
                         <img src="images/thumb-2.jpg" alt="Movie 2" />
                       </Link>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

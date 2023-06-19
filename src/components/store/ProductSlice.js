@@ -15,6 +15,7 @@ const productSlice = createSlice({
     searchdata: [],
     wishlistproduct: [],
     status: STATUSES.IDLE,
+    images: [],
     totalresult: 0,
   },
   reducers: {
@@ -49,9 +50,13 @@ const productSlice = createSlice({
         (item) => item.imdbID !== action.payload.imdbID
       );
     },
+    setimages(state, action) {
+      state.images = action.payload;
+    },
   },
 });
 export const {
+  setimages,
   setproducts,
   setstatus,
   settotalresult,
@@ -79,9 +84,28 @@ export function fetchproducts(page) {
               quantity: 1,
             })
           );
+
           console.log(newdata);
           dispatch(setproducts(newdata));
           dispatch(setstatus(STATUSES.IDLE));
+        });
+    } catch (err) {
+      console.log(err);
+      dispatch(setstatus(STATUSES.ERROR));
+    }
+  };
+}
+export function fetchproductsimages(page) {
+  return async function fetchproductsthunk(dispatch, getstate) {
+    dispatch(setstatus(STATUSES.LOADING));
+    try {
+      axios
+        .get(`https://www.omdbapi.com/?s=batman&apikey=b3b3b78&&page=${page}`)
+
+        .then((response) => {
+          dispatch(settotalresult(response.data.totalResults));
+
+          dispatch(setimages(response.data.Search));
         });
     } catch (err) {
       console.log(err);

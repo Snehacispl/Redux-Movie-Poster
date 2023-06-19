@@ -2314,6 +2314,7 @@ ul.arrow li a:hover {
  */
 .site-footer {
   padding: 50px 0;
+  background: black;
 }
 .site-footer .widget {
   margin-bottom: 30px;
@@ -2349,4 +2350,9 @@ ul.arrow li a:hover {
 }
 .site-footer .colophon {
   padding-top: 30px;
+}
+
+.main2 {
+  height: 100vh;
+  width: 100%;
 }

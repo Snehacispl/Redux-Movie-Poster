@@ -1,35 +1,25 @@
-import React from "react";
-import { Link } from "react-router-dom";
-function Banner() {
+import React, { useEffect } from "react";
+import Slider from "react-touch-drag-slider";
+
+import { useSelector, useDispatch } from "react-redux";
+import { fetchproductsimages } from "./store/ProductSlice";
+const Banner = () => {
+  const { images } = useSelector((state) => state.product);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    return () => dispatch(fetchproductsimages(6));
+  }, []);
   return (
-    <>
-      <div className="slider">
-        <ul className="slides">
-          <li>
-            <Link to="/">
-              <img src="images/slide-1.jpg" alt="Slide 1" />
-            </Link>
-          </li>
-          ;
-          <li>
-            <Link to="/">
-              <img src="images/slide-1.jpg" alt="Slide 1" />
-            </Link>
-          </li>
-          <li>
-            <Link to="/">
-              <img src="images/slide-2.jpg" alt="Slide 2" />
-            </Link>
-          </li>
-          <li>
-            <Link to="/">
-              <img src="images/slide-3.jpg" alt="Slide 3" />
-            </Link>
-          </li>
-        </ul>
-      </div>
-    </>
+    <div className="main2">
+      <Slider>
+        {images.map((item) => (
+          <div key={item.imdbID}>
+            <img src={item.Poster} alt={item.Poster} />
+          </div>
+        ))}
+      </Slider>
+    </div>
   );
-}
+};
 
 export default Banner;
