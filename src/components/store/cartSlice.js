@@ -8,10 +8,17 @@ const cartSlice = createSlice({
       const duplicate = state.find(
         (item) => item.imdbID === action.payload.imdbID
       );
-      if (!duplicate) {
+      if (duplicate) {
+        state.map((item) => {
+          if (item.imdbID === action.payload.imdbID) {
+            item.quantity = item.quantity + 1;
+          }
+        });
+      } else {
         state.push(action.payload);
       }
     },
+
     addtowishlist(state, action) {
       const duplicate = state.find(
         (item) => item.imdbID === action.payload.imdbID
