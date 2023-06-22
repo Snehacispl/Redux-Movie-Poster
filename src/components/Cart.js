@@ -1,8 +1,9 @@
 import React, { useRef } from "react";
 import "../assets/css/cartpage.css";
 import { useDispatch, useSelector } from "react-redux";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+
 import noimg from "../assets/images/No_Image_Available.jpg";
+import { Link } from "react-router-dom";
 import {
   removefromcart,
   clearCart,
@@ -150,38 +151,9 @@ const Cart = () => {
         {/* <div>
           <div ref={paypal}></div>
         </div> */}
-        <PayPalScriptProvider
-          options={{
-            "client-id":
-              "ARNMywa98AcRZjmGQ7KVSI0XfjxdOsjZecD9q60VJoykSYFsGvA2n-mzirC8xJM6dVKjcIHxqz_yYyGZ",
-          }}
-        >
-          <PayPalButtons
-            createOrder={(data, actions) => {
-              return actions.order.create({
-                purchase_units: [
-                  {
-                    description: JSON.stringify(cartitemnames),
-                    amount: {
-                      // value: totalp.current.getAttribute("price"),
-                      value: 0.01,
-                    },
-                  },
-                ],
-              });
-            }}
-            onApprove={(data, actions) => {
-              return actions.order.capture().then((details) => {
-                // const name = details.payer.name.given_name;
-                const orderdata = actions.order.capture();
-                console.log(orderdata);
-                setTimeout(() => {
-                  navigate("/Thank-you", { state: orderdata });
-                }, 3000);
-              });
-            }}
-          />
-        </PayPalScriptProvider>
+        <button type="button" className="button">
+          <Link to="/prospect"> Confirm </Link>
+        </button>
       </div>
     </div>
   );
