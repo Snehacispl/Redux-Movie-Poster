@@ -51,6 +51,7 @@ const Checkout = () => {
               "ARNMywa98AcRZjmGQ7KVSI0XfjxdOsjZecD9q60VJoykSYFsGvA2n-mzirC8xJM6dVKjcIHxqz_yYyGZ",
           }}
         >
+          {/* <!--paypal shipping details--> */}
           <PayPalButtons
             fundingSource={FUNDING.PAYPAL}
             createOrder={(data, actions) => {
