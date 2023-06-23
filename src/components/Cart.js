@@ -72,6 +72,12 @@ const Cart = () => {
 
   return (
     <div className="CartContainer">
+      <h4>
+        Cart <i class="fa fa-arrow-right" aria-hidden="true"></i>Prospect
+        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+        Checkout <i class="fa fa-arrow-right" aria-hidden="true"></i>Order
+        Confirmation
+      </h4>
       <div className="Header">
         <h3 className="Heading">Shopping Cart</h3>
         <h5 className="Action" onClick={() => dispatch(clearCart(cart))}>
@@ -152,7 +158,10 @@ const Cart = () => {
           <div ref={paypal}></div>
         </div> */}
         <button type="button" className="button">
-          <Link to="/prospect"> Confirm </Link>
+          <Link to="/prospect" style={{ textDecoration: "none" }}>
+            {" "}
+            Go To Next Step{" "}
+          </Link>
         </button>
       </div>
     </div>

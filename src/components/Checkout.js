@@ -5,7 +5,12 @@ import {
   FUNDING,
 } from "@paypal/react-paypal-js";
 
-import { useNavigate, useLocation } from "react-router-dom";
+import {
+  useNavigate,
+  useLocation,
+  Link,
+  createSearchParams,
+} from "react-router-dom";
 import { cartTotal } from "./store/cartSlice";
 import { useSelector } from "react-redux";
 const Checkout = () => {
@@ -23,7 +28,44 @@ const Checkout = () => {
   return (
     <main className="main-content">
       <div className="container">
-        <h2>Checkout</h2>
+        <h1>FINAL STEP:</h1>
+        <h3>Shipping InFormation</h3>
+        {state && (
+          <>
+            <table className="table">
+              <tbody>
+                <tr>
+                  <td>
+                    Full Name :
+                    {state.data.firstName + " " + state.data.lastName}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Shipping Address : {state.data.shippingAddress1},
+                    {state.data.shippingAddress2}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Shipping City :{state.data.shippingCity}</td>
+                </tr>
+                <tr>
+                  <td>Shipping State :{state.data.shippingState}</td>
+                </tr>
+                <tr>
+                  <td>Shipping Zip :{state.data.shippingZip}</td>
+                </tr>
+                <tr>
+                  <td>Country :{state.data.shippingCountry}</td>
+                </tr>
+              </tbody>
+            </table>
+            <button type="button">
+              <Link to="/prospect">Update Shipping Information</Link>
+            </button>
+          </>
+        )}
+
         <table className="table">
           <thead>
             <tr>
@@ -55,6 +97,7 @@ const Checkout = () => {
           <PayPalButtons
             fundingSource={FUNDING.PAYPAL}
             createOrder={(data, actions) => {
+              console.log(state.data);
               return actions.order.create({
                 purchase_units: [
                   {
@@ -87,7 +130,16 @@ const Checkout = () => {
                 const orderdata = actions.order.capture();
                 console.log(orderdata);
                 setTimeout(() => {
-                  navigate("/Thank-you", { state: orderdata });
+                  setTimeout(() => {
+                    var r = createSearchParams({
+                      orderid: orderdata.value.id,
+                    }).toString();
+                    navigate(
+                      "/Thank-you?" + r,
+
+                      { state: orderdata }
+                    );
+                  }, 3000);
                 }, 3000);
               });
             }}

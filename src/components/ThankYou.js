@@ -5,6 +5,7 @@ import { cartTotal } from "./store/cartSlice";
 const ThankYou = (orderdata) => {
   const location = useLocation();
   const data = location.state;
+  console.log(data);
   const cart = useSelector((state) => state.cart);
   const totalprice = useSelector(cartTotal).toFixed(2);
   return (

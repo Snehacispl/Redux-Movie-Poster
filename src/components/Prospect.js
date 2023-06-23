@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 const Prospect = () => {
@@ -8,10 +8,12 @@ const Prospect = () => {
     getValues,
     formState: { errors },
   } = useForm();
-  const [dataform, setData] = useState("");
+
   const navigate = useNavigate();
 
   const submitform = (data) => {
+    localStorage.setItem("data", JSON.stringify(data));
+
     setTimeout(() => {
       navigate("/checkout", {
         state: {
@@ -20,105 +22,244 @@ const Prospect = () => {
       });
     }, 2000);
   };
+
   return (
     <main className="main-content">
       <div className="container">
-        <form onSubmit={handleSubmit(submitform)}>
-          <div className="checkout-box__fields">
+        <form onSubmit={handleSubmit(submitform)} className="row g-3">
+          <div className="mb-3">
             <div className="fields__elements fields__elements--half">
-              <label htmlFor="first-name">First Name *</label>
+              <label htmlFor="first-name" className="form-label">
+                First Name *
+              </label>
               <input
                 type="text"
                 name="firstName"
                 id="first-name"
-                {...register("firstName", { required: true })}
+                className="form-control"
+                {...register("firstName", {
+                  required: true,
+                  pattern: {
+                    value: /^[a-zA-Z]*$/,
+                    message: "First name is not valid",
+                  },
+                })}
+                defaultValue={
+                  localStorage.getItem("data") &&
+                  JSON.parse(localStorage.getItem("data")).firstName
+                    ? JSON.parse(localStorage.getItem("data")).firstName
+                    : ""
+                }
               />
 
-              {errors.firstName && <span>First Name is required</span>}
+              {errors.firstName?.type === "required" && (
+                <p className="alert-p">First Name is required</p>
+              )}
+              <p className="alert-p">
+                {errors.firstName && errors.firstName.message}
+              </p>
             </div>
-            <div className="fields__elements fields__elements--half">
-              <label htmlFor="last-name">Last Name *</label>
+            <div className="col-auto">
+              <label htmlFor="last-name" className="form-label">
+                Last Name *
+              </label>
               <input
                 type="text"
                 name="lastName"
                 id="last-name"
-                className="required"
-                {...register("lastName", { required: true })}
+                className="form-control"
+                {...register("lastName", {
+                  required: true,
+                  pattern: {
+                    value: /^[a-zA-Z]*$/,
+                    message: "First name is not valid",
+                  },
+                })}
+                defaultValue={
+                  localStorage.getItem("data") &&
+                  JSON.parse(localStorage.getItem("data")).lastName
+                    ? JSON.parse(localStorage.getItem("data")).lastName
+                    : ""
+                }
               />
-              {errors.lastName && <span>Last Name is required</span>}
+              {errors.lastName?.type === "required" && (
+                <p className="alert-p">Last Name is required</p>
+              )}
+
+              <p className="alert-p">
+                {errors.lastName && errors.lastName.message}
+              </p>
             </div>
-            <div className="fields__elements fields__elements--half">
-              <label htmlFor="email">Email *</label>
+            <div className="col-auto">
+              <label htmlFor="email" className="form-label">
+                Email *
+              </label>
               <input
-                type="email"
+                type="text"
                 name="email"
                 id="email"
-                {...register("email", { required: true })}
+                className="form-control"
+                {...register("email", {
+                  required: true,
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  },
+                })}
+                defaultValue={
+                  localStorage.getItem("data") &&
+                  JSON.parse(localStorage.getItem("data")).email
+                    ? JSON.parse(localStorage.getItem("data")).email
+                    : ""
+                }
               />
-              {errors.email && <span>Please enter a valid email id</span>}
+              {errors.email && (
+                <p className="alert-p">Please enter a valid email id</p>
+              )}
+            </div>
+            <div className="col-auto">
+              <label htmlFor="phone" className="form-label">
+                Contact Number *
+              </label>
+              <input
+                type="number"
+                name="phone"
+                id="phone"
+                className="form-control"
+                {...register("phone", {
+                  required: true,
+                  minLength: 10,
+                  maxLength: 10,
+                })}
+                defaultValue={
+                  localStorage.getItem("data") &&
+                  JSON.parse(localStorage.getItem("data")).phone
+                    ? JSON.parse(localStorage.getItem("data")).phone
+                    : ""
+                }
+              />
+              {errors.phone?.type === "required" && (
+                <p className="alert-p">Please enter a valid contact number</p>
+              )}
+              {errors.phone?.type === "minLength" && (
+                <p className="alert-p">
+                  The shipping Zip should have at least 10 characters
+                </p>
+              )}
+              {errors.phone?.type === "maxLength" && (
+                <p className="alert-p">
+                  The shipping Zip should have 10 characters
+                </p>
+              )}
             </div>
 
-            <div className="fields__elements">
-              <label htmlFor="shipping-address">
+            <div className="col-auto">
+              <label htmlFor="shipping-address" className="form-label">
                 Shipping Address line 1 *
               </label>
               <input
                 type="text"
                 name="shippingAddress1"
                 id="shipping-address"
+                className="form-control"
                 {...register("shippingAddress1", { required: true })}
+                defaultValue={
+                  localStorage.getItem("data") &&
+                  JSON.parse(localStorage.getItem("data")).shippingAddress1
+                    ? JSON.parse(localStorage.getItem("data")).shippingAddress1
+                    : ""
+                }
               />
               {errors.shippingAddress1 && (
-                <span>Please enter your shipping address line 1</span>
+                <p className="alert-p">
+                  Please enter your shipping address line 1
+                </p>
               )}
             </div>
-            <div className="fields__elements">
-              <label htmlFor="shipping-address">Shipping Address line 2*</label>
+            <div className="col-auto">
+              <label htmlFor="shipping-address" className="form-label">
+                Shipping Address line 2*
+              </label>
               <input
                 type="text"
+                className="form-control"
                 name="shippingAddress2"
                 id="shipping-address"
-                {...register("shippingAddress2", { required: true })}
+                {...register("shippingAddress2", { required: false })}
+                defaultValue={
+                  localStorage.getItem("data") &&
+                  JSON.parse(localStorage.getItem("data")).shippingAddress2
+                    ? JSON.parse(localStorage.getItem("data")).shippingAddress2
+                    : ""
+                }
               />
-              {errors.shippingAddress1 && (
-                <span>Please enter your shipping address line 2</span>
-              )}
+              {/* {errors.shippingAddress1 && (
+                <p className="alert-p">
+                  Please enter your shipping address line 2
+                </p>
+              )} */}
             </div>
 
-            <div className="fields__elements fields__elements">
-              <label htmlFor="country">Country *</label>
+            <div className="col-auto">
+              <label htmlFor="country" className="form-label">
+                Country *
+              </label>
               <select
                 name="shippingCountry"
+                className="form-control"
                 id="country"
                 {...register("shippingCountry", { required: true })}
+                defaultValue={
+                  localStorage.getItem("data") &&
+                  JSON.parse(localStorage.getItem("data")).shippingCountry
+                    ? JSON.parse(localStorage.getItem("data")).shippingCountry
+                    : ""
+                }
               >
                 <option value="US">United States</option>
               </select>
               {errors.shippingCountry && (
-                <span>Please enter your shipping country</span>
+                <p className="alert-p">Please enter your shipping country</p>
               )}
             </div>
 
-            <div className="fields__elements fields__elements--half">
-              <label htmlFor="city">City *</label>
+            <div className="col-auto">
+              <label htmlFor="city" className="form-label">
+                City *
+              </label>
               <input
                 type="text"
                 name="shippingCity"
                 id="city"
+                className="form-control"
                 {...register("shippingCity", { required: true })}
+                defaultValue={
+                  localStorage.getItem("data") &&
+                  JSON.parse(localStorage.getItem("data")).shippingCity
+                    ? JSON.parse(localStorage.getItem("data")).shippingCity
+                    : ""
+                }
               />
               {errors.shippingCity && (
-                <span>Please enter your shipping city</span>
+                <p className="alert-p">Please enter your shipping city</p>
               )}
             </div>
 
-            <div className="fields__elements fields__elements--half">
-              <label htmlFor="state">State *</label>
+            <div className="col-auto">
+              <label htmlFor="state" className="form-label">
+                State *
+              </label>
 
               <select
                 name="shippingState"
                 id="states"
+                className="form-control"
                 {...register("shippingState", { required: true })}
+                defaultValue={
+                  localStorage.getItem("data") &&
+                  JSON.parse(localStorage.getItem("data")).shippingState
+                    ? JSON.parse(localStorage.getItem("data")).shippingState
+                    : ""
+                }
               >
                 <option value="">Select Your State</option>
                 <option value="AL">Alabama</option>
@@ -175,24 +316,46 @@ const Prospect = () => {
                 <option value="WY">Wyoming</option>
               </select>
               {errors.shippingState && (
-                <span>Please enter your shipping state</span>
+                <p className="alert-p">Please enter your shipping state</p>
               )}
             </div>
 
-            <div className="fields__elements fields__elements--half">
-              <label htmlFor="zip">Zip Code *</label>
+            <div className="col-auto">
+              <label htmlFor="zip" className="form-label">
+                Zip Code *
+              </label>
               <input
-                type="tel"
+                type="number"
                 name="shippingZip"
-                {...register("shippingZip", { required: true })}
+                className="form-control"
+                {...register("shippingZip", {
+                  required: true,
+                  maxLength: 5,
+                  minLength: 5,
+                })}
+                defaultValue={
+                  localStorage.getItem("data") &&
+                  JSON.parse(localStorage.getItem("data")).shippingZip
+                    ? JSON.parse(localStorage.getItem("data")).shippingZip
+                    : ""
+                }
               />
-              {errors.shippingZip && (
-                <span>Please enter your shipping zip</span>
+              {errors.shippingZip?.type === "required" && (
+                <p className="alert-p">Please enter your shipping zip</p>
+              )}
+              {errors.shippingZip?.type === "minLength" && (
+                <p className="alert-p">
+                  The shipping Zip should have at least 5 characters
+                </p>
+              )}
+              {errors.shippingZip?.type === "maxLength" && (
+                <p className="alert-p">
+                  The shipping Zip should have 5 characters
+                </p>
               )}
             </div>
           </div>
 
-          <p>{dataform}</p>
           <button type="submit">Rush to Checkout</button>
         </form>
       </div>
