@@ -151,12 +151,12 @@ const Checkout = () => {
 
                     amount: {
                       //  value: totalamount,
-                      value: 0.0,
+                      value: 0.01,
                       breakdown: {
                         item_total: {
                           currency_code: "USD",
                           // value: totalamount.toString(),
-                          value: 0.0,
+                          value: 0.01,
                         },
                       },
                     },
