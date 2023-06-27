@@ -145,7 +145,7 @@ const Checkout = () => {
               return actions.order.create({
                 purchase_units: [
                   {
-                    description: "Posters",
+                    description: "ReduxPosters",
 
                     items: JSON.parse(JSON.stringify(cartitemnames)),
 
