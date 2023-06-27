@@ -1,13 +1,20 @@
-import React, { useRef } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { cartTotal } from "./store/cartSlice";
+import { cartTotal, clearCart } from "./store/cartSlice";
+
 const ThankYou = (orderdata) => {
   const location = useLocation();
   const data = location.state;
   console.log(data);
   const cart = useSelector((state) => state.cart);
   const totalprice = useSelector(cartTotal).toFixed(2);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    setInterval(() => {
+      dispatch(clearCart(cart));
+    }, 15000);
+  });
   return (
     <main className="main-content">
       <div className="container">

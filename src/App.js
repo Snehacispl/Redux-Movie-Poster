@@ -16,26 +16,30 @@ import ThankYou from "./components/ThankYou";
 import Wishlist from "./components/Wishlist";
 import Checkout from "./components/Checkout";
 import Prospect from "./components/Prospect";
-
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
+let persister = persistStore(store);
 function App() {
   return (
     <div className="App">
       <Provider store={store}>
-        <BrowserRouter>
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/MovieList" element={<MovieList />} />
+        <PersistGate persistor={persister}>
+          <BrowserRouter>
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/MovieList" element={<MovieList />} />
 
-            <Route path="/MovieDetails/:id" element={<MovieDetail />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/Prospect" element={<Prospect />} />
-            <Route path="/Checkout" element={<Checkout />} />
-            <Route path="/Thank-you" element={<ThankYou />} />
-            <Route path="/wishlist" element={<Wishlist />} />
-          </Routes>
-          <Footer />
-        </BrowserRouter>
+              <Route path="/MovieDetails/:id" element={<MovieDetail />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/Prospect" element={<Prospect />} />
+              <Route path="/Checkout" element={<Checkout />} />
+              <Route path="/Thank-you" element={<ThankYou />} />
+              <Route path="/wishlist" element={<Wishlist />} />
+            </Routes>
+            <Footer />
+          </BrowserRouter>
+        </PersistGate>
       </Provider>
     </div>
   );
