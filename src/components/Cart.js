@@ -73,9 +73,9 @@ const Cart = () => {
   return (
     <div className="CartContainer">
       <h4>
-        Cart <i class="fa fa-arrow-right" aria-hidden="true"></i>Prospect
-        <i class="fa fa-arrow-right" aria-hidden="true"></i>
-        Checkout <i class="fa fa-arrow-right" aria-hidden="true"></i>Order
+        Cart <i className="fa fa-arrow-right" aria-hidden="true"></i>Prospect
+        <i className="fa fa-arrow-right" aria-hidden="true"></i>
+        Checkout <i className="fa fa-arrow-right" aria-hidden="true"></i>Order
         Confirmation
       </h4>
       <div className="Header">
