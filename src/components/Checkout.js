@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   PayPalScriptProvider,
   PayPalButtons,
@@ -10,6 +10,7 @@ import {
   useLocation,
   Link,
   createSearchParams,
+  useSearchParams,
 } from "react-router-dom";
 import { cartTotal } from "./store/cartSlice";
 import { useSelector } from "react-redux";
@@ -19,6 +20,8 @@ const Checkout = () => {
   const cart = useSelector((state) => state.cart);
   const totalprice = useSelector(cartTotal).toFixed(2);
   const { state } = useLocation();
+  const [queryParameters] = useSearchParams();
+
   let cartitemnames = [];
 
   cart.map((item) => {
@@ -145,7 +148,7 @@ const Checkout = () => {
               return actions.order.create({
                 purchase_units: [
                   {
-                    description: "Posters",
+                    description: "ReduxPosters",
 
                     items: JSON.parse(JSON.stringify(cartitemnames)),
 
@@ -186,10 +189,10 @@ const Checkout = () => {
                 setalertclass("Payment Successfull");
                 setTimeout(() => {
                   var r = createSearchParams({
-                    orderid: orderdata.value.id,
+                    order_id: orderdata.value.id,
                   }).toString();
                   navigate(
-                    "/Thank-you?" + r,
+                    "/Thank-you?" + queryParameters + "&" + r,
 
                     { state: orderdata }
                   );
