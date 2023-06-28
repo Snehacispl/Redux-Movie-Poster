@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { cartTotal, clearCart } from "./store/cartSlice";
 
 const ThankYou = (orderdata) => {
@@ -15,6 +15,7 @@ const ThankYou = (orderdata) => {
       dispatch(clearCart(cart));
     }, 15000);
   });
+  const [queryParameters] = useSearchParams();
   return (
     <main className="main-content">
       <div className="container">
@@ -44,6 +45,8 @@ const ThankYou = (orderdata) => {
         <h1>Total: ${totalprice}</h1>
         <h3>Transaction ID</h3>
         <p>{data && data.value.id} </p>
+        <h3>Customer ID</h3>
+        {queryParameters && queryParameters.get("customer_id")}
         {data &&
           data.value.purchase_units.map((item) => {
             return (

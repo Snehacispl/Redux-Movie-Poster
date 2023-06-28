@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, createSearchParams } from "react-router-dom";
+var randomstring = require("randomstring");
 const Prospect = () => {
   const {
     register,
@@ -14,15 +15,27 @@ const Prospect = () => {
   const submitform = (data) => {
     localStorage.setItem("data", JSON.stringify(data));
 
+    // setTimeout(() => {
+    //   navigate("/checkout", {
+    //     state: {
+    //       data,
+    //     },
+    //   });
+    // }, 1000);
     setTimeout(() => {
-      navigate("/checkout", {
+      var customer_id = createSearchParams({
+        customer_id: randomstring.generate({
+          length: 10,
+          charset: "alphanumeric",
+        }),
+      }).toString();
+      navigate("/checkout?" + customer_id, {
         state: {
           data,
         },
       });
     }, 1000);
   };
-
   return (
     <main className="main-content">
       <div className="container">
