@@ -1,22 +1,36 @@
 const Movie = require('../models/movies');
-const PER_PAGE_COUNT = 1;
 
 exports.getByTitle = async (req, res, next) => {
-    const page = +req.query.page || 1; //Converting it to integer
+    const page = +req.query.page || 2; //Converting it to integer
+    const PER_PAGE_COUNT = 2;
+
     let searchValue = req.query.searchValue;
     let searchBy = req.query.searchBy;    
-    let totalMovies , moviesCount , movies;
+    let totalMovies , moviesCount , movies; 
     try {
-                
+
+       /*previousPage: page - 1,
+            hasNextPage: PER_PAGE_COUNT * page < totalMovies,
+            hasPreviousPage: page > 1,*/
+
+
+      if( (searchBy == null || searchBy=='' || searchBy==undefined) && (searchValue == null || searchValue=='' || searchValue==undefined) )
+      {
+        moviesCount = await Movie.countDocuments();
+        movies = await Movie.find().limit(PER_PAGE_COUNT);
+
+      }
+      else
+      {
         moviesCount = await Movie.countDocuments({[searchBy]: {$regex: decodeURI(searchValue), $options: 'i'}});
-        totalMovies = moviesCount;
         movies = await Movie.find({[searchBy]: {$regex: decodeURI(searchValue), $options: 'i'}}).skip((page - 1) * PER_PAGE_COUNT).limit(PER_PAGE_COUNT);
+
+      }
+                
+        totalMovies = moviesCount;
         let pagination = {
             totalMovies: totalMovies,
-            currentPage: page,
-            previousPage: page - 1,
-            hasNextPage: PER_PAGE_COUNT * page < totalMovies,
-            hasPreviousPage: page > 1,
+            currentPage: page,            
             moviesList: movies
           }; 
           res.status(200).json({status:"success", "message":"Movies Found",data:pagination});      
