@@ -3,18 +3,17 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 const mongoose = require('mongoose');
 const app = express();
-const port = process.env.PORT;
-const uri = process.env.CONNECTION_URI;
-
+ 
 const users = require('./routes/users');
-require('./middleware/authenticateToken');
- 
- 
+const authenticateToken = require('./middleware/authenticateToken');
+const movies = require('./routes/movies'); 
+
 // BODY PARSER
 app.use(bodyParser.json());
  
 app.use('/users', users);
- 
+app.use('/checkloginuser', authenticateToken,users);
+app.use('/entertainment' , authenticateToken, movies);
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -42,7 +41,7 @@ app.use((err, request, res, next) => {
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(`${uri}`, {
+    const conn = await mongoose.connect(`${process.env.CONNECTION_URI}`, {
       useNewUrlParser: true,
       dbName: 'movieappdb',
     });
@@ -55,6 +54,6 @@ const connectDB = async () => {
 connectDB();
 
 // LISTEN FOR REQUESTS
-app.listen(port,() => {
-    console.log('Listening on Port ' + port);
+app.listen(process.env.PORT,() => {
+    console.log('Listening on Port ' + process.env.PORT);
 });
